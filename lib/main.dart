@@ -4,6 +4,7 @@ import 'package:news_app/data/models/article.dart';
 import 'package:news_app/pages/page_article_detail.dart';
 import 'package:news_app/pages/page_article_list.dart';
 import 'package:news_app/pages/page_article_web_view.dart';
+import 'package:news_app/pages/page_home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -22,9 +23,9 @@ class MyApp extends StatelessWidget {
           colorScheme: const ColorScheme.light(
             primary: Colors.deepPurple,
           )),
-      initialRoute: PageArticleList.routeName,
+      initialRoute: PageHome.routeName,
       routes: {
-        PageArticleList.routeName: (context) => const PageArticleList(),
+        PageHome.routeName: (context) => const PageHome(),
         PageArticleDetail.routeName: (context) => PageArticleDetail(
             article: ModalRoute.of(context)?.settings.arguments as Article),
         PageArticleWebView.routeName: (context) => PageArticleWebView(

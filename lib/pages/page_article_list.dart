@@ -25,33 +25,47 @@ class _PageArticleListState extends State<PageArticleList> {
   }
 
   Widget _buildList(BuildContext context) {
-    return FutureBuilder<ArticlesResult>(
-      future: _article,
-      builder: (context, AsyncSnapshot<ArticlesResult> snapshot) {
-        var state = snapshot.connectionState;
-        if (state != ConnectionState.done) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: snapshot.data?.articles.length,
-              itemBuilder: (context, index) {
-                var article = snapshot.data?.articles[index];
-                return WidgetCardArticle(article: article!);
-              },
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Material(
-                child: Text(snapshot.error.toString()),
-              ),
-            );
-          } else {
-            return const Material(child: Text(''));
-          }
-        }
-      },
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          FilledButton(
+            child: const Text('Refresh Data'),
+            onPressed: () {
+              setState(() {
+                _article = ApiService().topHeadlines();
+              });
+            },
+          ),
+          FutureBuilder<ArticlesResult>(
+            future: _article,
+            builder: (context, AsyncSnapshot<ArticlesResult> snapshot) {
+              var state = snapshot.connectionState;
+              if (state != ConnectionState.done) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data?.articles.length,
+                    itemBuilder: (context, index) {
+                      var article = snapshot.data?.articles[index];
+                      return WidgetCardArticle(article: article!);
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Material(
+                      child: Text(snapshot.error.toString()),
+                    ),
+                  );
+                } else {
+                  return const Material(child: Text(''));
+                }
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 
