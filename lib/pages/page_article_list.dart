@@ -1,71 +1,51 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/data/api/api_services.dart';
-import 'package:news_app/data/models/article.dart';
+import 'package:news_app/provider/news_provider.dart';
 import 'package:news_app/widgets/widget_card_article.dart';
 import 'package:news_app/widgets/widget_platform.dart';
+import 'package:provider/provider.dart';
 
-class PageArticleList extends StatefulWidget {
+class PageArticleList extends StatelessWidget {
   static const routeName = '/article_list';
 
   const PageArticleList({super.key});
 
-  @override
-  State<PageArticleList> createState() => _PageArticleListState();
-}
-
-class _PageArticleListState extends State<PageArticleList> {
-  late Future<ArticlesResult> _article;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _article = ApiService().topHeadlines();
-  }
-
   Widget _buildList(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          FilledButton(
-            child: const Text('Refresh Data'),
-            onPressed: () {
-              setState(() {
-                _article = ApiService().topHeadlines();
-              });
+    return Consumer<NewsProvider>(
+      builder: (context, state, _) {
+        if (state.state == ResultState.loading) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state.state == ResultState.hasData) {
+          return ListView.builder(
+            shrinkWrap: true,
+            itemCount: state.result.articles.length,
+            itemBuilder: (context, index) {
+              var article = state.result.articles[index];
+              return WidgetCardArticle(article: article);
             },
-          ),
-          FutureBuilder<ArticlesResult>(
-            future: _article,
-            builder: (context, AsyncSnapshot<ArticlesResult> snapshot) {
-              var state = snapshot.connectionState;
-              if (state != ConnectionState.done) {
-                return const Center(child: CircularProgressIndicator());
-              } else {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data?.articles.length,
-                    itemBuilder: (context, index) {
-                      var article = snapshot.data?.articles[index];
-                      return WidgetCardArticle(article: article!);
-                    },
-                  );
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Material(
-                      child: Text(snapshot.error.toString()),
-                    ),
-                  );
-                } else {
-                  return const Material(child: Text(''));
-                }
-              }
-            },
-          ),
-        ],
-      ),
+          );
+        } else if (state.state == ResultState.noData) {
+          return Center(
+            child: Material(
+              child: Text(state.message),
+            ),
+          );
+        } else if (state.state == ResultState.error) {
+          return Center(
+            child: Material(
+              child: Text(state.message),
+            ),
+          );
+        } else {
+          return const Center(
+            child: Material(
+              child: Text(''),
+            ),
+          );
+        }
+      },
     );
   }
 

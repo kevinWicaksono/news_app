@@ -2,9 +2,12 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/common/styles.dart';
+import 'package:news_app/data/api/api_services.dart';
 import 'package:news_app/pages/page_article_list.dart';
 import 'package:news_app/pages/page_settings.dart';
+import 'package:news_app/provider/news_provider.dart';
 import 'package:news_app/widgets/widget_platform.dart';
+import 'package:provider/provider.dart';
 
 class PageHome extends StatefulWidget {
   const PageHome({super.key});
@@ -30,7 +33,10 @@ class _PageHomeState extends State<PageHome> {
   ];
 
   final List<Widget> _listWidget = [
-    const PageArticleList(),
+    ChangeNotifierProvider<NewsProvider>(
+      create: (_) => NewsProvider(apiService: ApiService()),
+      child: const PageArticleList(),
+    ),
     const PageSettings(),
   ];
 

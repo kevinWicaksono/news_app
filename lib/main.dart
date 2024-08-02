@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:news_app/common/text_theme.dart';
 import 'package:news_app/data/models/article.dart';
 import 'package:news_app/pages/page_article_detail.dart';
-import 'package:news_app/pages/page_article_list.dart';
 import 'package:news_app/pages/page_article_web_view.dart';
 import 'package:news_app/pages/page_home.dart';
 
