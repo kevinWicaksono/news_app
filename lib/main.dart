@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/common/text_theme.dart';
-import 'package:news_app/data/models/article.dart';
+import 'package:news_app/data/ViewModels/vm_article.dart';
 import 'package:news_app/pages/page_article_detail.dart';
 import 'package:news_app/pages/page_article_web_view.dart';
 import 'package:news_app/pages/page_home.dart';
@@ -26,10 +26,10 @@ class MyApp extends StatelessWidget {
       routes: {
         PageHome.routeName: (context) => const PageHome(),
         PageArticleDetail.routeName: (context) => PageArticleDetail(
-            article: ModalRoute.of(context)?.settings.arguments as Article),
+            article: ModalRoute.of(context)?.settings.arguments as VmArticle),
         PageArticleWebView.routeName: (context) => PageArticleWebView(
             url: ModalRoute.of(context)?.settings.arguments as String),
       },
     );
-  }
+  } 
 }

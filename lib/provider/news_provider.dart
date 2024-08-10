@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/data/api/api_services.dart';
-import 'package:news_app/data/models/article.dart';
+import 'package:news_app/data/ViewModels/vm_article.dart';
 
 enum ResultState { loading, noData, hasData, error }
 
@@ -11,13 +11,13 @@ class NewsProvider extends ChangeNotifier {
     _fetchAllArticle();
   }
 
-  late ArticlesResult _articlesResult;
+  late VmArticlesResult _articlesResult;
   late ResultState _state;
   String _message = '';
 
   String get message => _message;
 
-  ArticlesResult get result => _articlesResult;
+  VmArticlesResult get result => _articlesResult;
 
   ResultState get state => _state;
 

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/common/styles.dart';
-import 'package:news_app/data/models/article.dart';
+import 'package:news_app/data/ViewModels/vm_article.dart';
 import 'package:news_app/pages/page_article_detail.dart';
 
 class WidgetCardArticle extends StatelessWidget {
-  final Article article;
+  final VmArticle article;
 
   const WidgetCardArticle({
     super.key,

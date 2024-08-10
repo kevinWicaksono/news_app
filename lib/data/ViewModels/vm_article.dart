@@ -1,4 +1,4 @@
-class Article {
+class VmArticle {
   String? author;
   String title;
   String? description;
@@ -7,7 +7,7 @@ class Article {
   DateTime? publishedAt;
   String? content;
 
-  Article({
+  VmArticle({
     required this.author,
     required this.title,
     required this.description,
@@ -17,7 +17,7 @@ class Article {
     required this.content,
   });
 
-  factory Article.fromJson(Map<String, dynamic> json) => Article(
+  factory VmArticle.fromJson(Map<String, dynamic> json) => VmArticle(
         author: json["author"],
         title: json["title"],
         description: json["description"],
@@ -28,28 +28,28 @@ class Article {
       );
 }
 
-class ArticlesResult {
+class VmArticlesResult {
   final String status;
   final int totalResults;
-  final List<Article> articles;
+  final List<VmArticle> articles;
 
-  ArticlesResult({
+  VmArticlesResult({
     required this.status,
     required this.totalResults,
     required this.articles,
   });
 
-  factory ArticlesResult.fromJson(Map<String, dynamic> json) => ArticlesResult(
+  factory VmArticlesResult.fromJson(Map<String, dynamic> json) => VmArticlesResult(
         status: json["status"],
         totalResults: json["totalResults"],
-        articles: List<Article>.from((json["articles"] as List)
-            .map((x) => Article.fromJson(x))
-            .where((article) =>
-                article.author != null &&
-                article.urlToImage != null &&
-                article.publishedAt != null &&
-                article.content != null)),
-        // articles: List<Article>.from(
-        //     json["articles"].map((x) => Article.fromJson(x))),
+        articles: List<VmArticle>.from((json["articles"] as List)
+            .map((x) => VmArticle.fromJson(x))
+            .where((vmArticle) =>
+                vmArticle.author != null &&
+                vmArticle.urlToImage != null &&
+                vmArticle.publishedAt != null &&
+                vmArticle.content != null)),
+        // articles: List<vmArticle>.from(
+        //     json["articles"].map((x) => vmArticle.fromJson(x))),
       );
 }

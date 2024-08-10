@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/data/models/article.dart';
+import 'package:news_app/data/ViewModels/vm_article.dart';
 import 'package:news_app/pages/page_article_web_view.dart';
 
 class PageArticleDetail extends StatelessWidget {
   static const routeName = '/article_detail';
 
-  final Article article;
+  final VmArticle article;
 
   const PageArticleDetail({super.key, required this.article});
 
