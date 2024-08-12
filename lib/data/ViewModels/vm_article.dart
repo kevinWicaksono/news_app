@@ -17,6 +17,16 @@ class VmArticle {
     required this.content,
   });
 
+  Map<String, dynamic> toJson() => {
+        "author": author,
+        "title": title,
+        "description": description,
+        "url": url,
+        "urlToImage": urlToImage,
+        "publishedAt": publishedAt?.toIso8601String(),
+        "content": content,
+      };
+
   factory VmArticle.fromJson(Map<String, dynamic> json) => VmArticle(
         author: json["author"],
         title: json["title"],
@@ -39,7 +49,14 @@ class VmArticlesResult {
     required this.articles,
   });
 
-  factory VmArticlesResult.fromJson(Map<String, dynamic> json) => VmArticlesResult(
+  Map<String, dynamic> toJson() => {
+        "status": status,
+        "totalResults": totalResults,
+        "articles": List<dynamic>.from(articles.map((x) => x.toJson())),
+      };
+
+  factory VmArticlesResult.fromJson(Map<String, dynamic> json) =>
+      VmArticlesResult(
         status: json["status"],
         totalResults: json["totalResults"],
         articles: List<VmArticle>.from((json["articles"] as List)

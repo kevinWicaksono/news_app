@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:news_app/common/styles.dart';
+import 'package:news_app/provider/scheduling_provider.dart';
+import 'package:news_app/widgets/widget_custom_dialog.dart';
 import 'package:news_app/widgets/widget_platform.dart';
+import 'package:provider/provider.dart';
 
 class PageSettings extends StatelessWidget {
   const PageSettings({super.key});
@@ -15,55 +17,25 @@ class PageSettings extends StatelessWidget {
             title: const Text('Dark Theme'),
             trailing: Switch.adaptive(
               value: false,
-              onChanged: (value) {
-                defaultTargetPlatform == TargetPlatform.iOS
-                    ? showCupertinoDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (context) {
-                          return CupertinoAlertDialog(
-                            title: const Text('Coming Soon!'),
-                            content:
-                                const Text('This feature will be coming soon!'),
-                            actions: [
-                              CupertinoDialogAction(
-                                child: const Text(
-                                  'Ok',
-                                  style: TextStyle(
-                                    color: secondaryColor,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      )
-                    : showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Coming Soon!'),
-                            content:
-                                const Text('This feature will be coming soon!'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text(
-                                  'Ok',
-                                  style: TextStyle(
-                                    color: secondaryColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+              onChanged: (value) => widgetCustomDialog(context),
+            ),
+          ),
+        ),
+        Material(
+          child: ListTile(
+            title: const Text('Scheduling News'),
+            trailing: Consumer<SchedulingProvider>(
+              builder: (context, scheduled, _) {
+                return Switch.adaptive(
+                  value: scheduled.isScheduled,
+                  onChanged: (value) async {
+                    if (Platform.isIOS) {
+                      widgetCustomDialog(context);
+                    } else {
+                      scheduled.scheduledNews(value);
+                    }
+                  },
+                );
               },
             ),
           ),

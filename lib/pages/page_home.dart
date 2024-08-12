@@ -3,9 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/common/styles.dart';
 import 'package:news_app/data/api/api_services.dart';
+import 'package:news_app/pages/page_article_detail.dart';
 import 'package:news_app/pages/page_article_list.dart';
 import 'package:news_app/pages/page_settings.dart';
 import 'package:news_app/provider/news_provider.dart';
+import 'package:news_app/provider/scheduling_provider.dart';
+import 'package:news_app/utils/notification_helper.dart';
 import 'package:news_app/widgets/widget_platform.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +22,8 @@ class PageHome extends StatefulWidget {
 }
 
 class _PageHomeState extends State<PageHome> {
+  final NotificationHelper _notificationHelper = NotificationHelper();
+
   int _bottomNavIndex = 0;
 
   final List<BottomNavigationBarItem> _bottomNavBarItems = [
@@ -37,8 +42,24 @@ class _PageHomeState extends State<PageHome> {
       create: (_) => NewsProvider(apiService: ApiService()),
       child: const PageArticleList(),
     ),
-    const PageSettings(),
+    ChangeNotifierProvider<SchedulingProvider>(
+      create: (_) => SchedulingProvider(),
+      child: const PageSettings(),
+    ),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationHelper
+        .configureSelectNotificationSubject(PageArticleDetail.routeName);
+  }
+
+  @override
+  void dispose() {
+    selectNotificationSubject.close();
+    super.dispose();
+  }
 
   Widget _buildAndroid(BuildContext context) {
     return Scaffold(

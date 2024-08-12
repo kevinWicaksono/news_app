@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/common/navigation.dart';
 import 'package:news_app/common/styles.dart';
 import 'package:news_app/data/ViewModels/vm_article.dart';
 import 'package:news_app/pages/page_article_detail.dart';
@@ -25,17 +26,18 @@ class WidgetCardArticle extends StatelessWidget {
           child: Image.network(
             article.urlToImage!,
             width: 100,
+            errorBuilder: (context, error, stackTrace) => const SizedBox(
+              width: 100,
+              child: Text('image data'),
+            ),
           ),
         ),
         title: Text(
           article.title,
         ),
         subtitle: Text(article.author ?? ''),
-        onTap: () => Navigator.pushNamed(
-          context,
-          PageArticleDetail.routeName,
-          arguments: article,
-        ),
+        onTap: () =>
+            Navigation.intentWithData(PageArticleDetail.routeName, article),
       ),
     );
   }
